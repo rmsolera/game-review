@@ -88,57 +88,41 @@ hibernate:
         queries: false
         use_second_level_cache: false
         use_query_cache: false
-
-# dataSource:
-#     pooled: true
-#     jmxExport: true
-#     driverClassName: org.h2.Driver
-#     username: sa
-#     password: ''
-
-#-# conexión a BBDD Oracle #-#
-    dataSource:
-        pooled: true
-        jmxExport: true
-        driverClassName: 'oracle.jdbc.OracleDriver'
-        dialect: 'org.hibernate.dialect.Oracle10gDialect'
-        dbCreate: none
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+dataSource:
+    pooled: true
+    jmxExport: true
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
 
 environments:
-#NOTA: SIEMPRE establecer dbCreate: none, en caso de no querer actualizar el modelo
-#de lo contrario es posible que un plugin o alguna configuracion establezca un "create" o "create-drop"
-#y elimine filas de las tablas de la base de datos.
-   
     development:
         dataSource:
-            dbCreate: create
-            url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
-            username: 'ruben'
-            password: 'kbxcanf2lvobfx'
-            logSql: true
-            formatSql: true
+            dbCreate: create-drop
+            url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    test:
+        dataSource:
+            dbCreate: update
+            url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    production:
+        dataSource:
+            dbCreate: none
+            url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
             properties:
-            jmxEnabled : true
-            initialSize : 5
-            maxActive : 50
-            minIdle : 5
-            maxIdle : 25
-            maxWait : 10000
-            maxAge : 600000
-            timeBetweenEvictionRunsMillis : 5000
-            minEvictableIdleTimeMillis : 60000
-            validationQuery : "SELECT 1 from dual"
-            validationQueryTimeout : 3
-            validationInterval : 15000
-            testOnBorrow : true
-            testWhileIdle : true
-            testOnReturn : false
-        test:
-            dataSource:
-                dbCreate: none       
-                url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
-        production:
-            dataSource:
-                dbCreate: none       
-                url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
+                jmxEnabled: true
+                initialSize: 5
+                maxActive: 50
+                minIdle: 5
+                maxIdle: 25
+                maxWait: 10000
+                maxAge: 600000
+                timeBetweenEvictionRunsMillis: 5000
+                minEvictableIdleTimeMillis: 60000
+                validationQuery: SELECT 1
+                validationQueryTimeout: 3
+                validationInterval: 15000
+                testOnBorrow: true
+                testWhileIdle: true
+                testOnReturn: false
+                jdbcInterceptors: ConnectionState
+                defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
