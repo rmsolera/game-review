@@ -97,12 +97,12 @@ hibernate:
 #     password: ''
 
 #-# conexión a BBDD Oracle #-#
-    dataSource:
-        pooled: true
-        jmxExport: true
-        driverClassName: 'oracle.jdbc.OracleDriver'
-        dialect: 'org.hibernate.dialect.Oracle10gDialect'
-        dbCreate: none
+dataSource:
+    pooled: true
+    jmxExport: true
+    driverClassName: 'oracle.jdbc.OracleDriver'
+    dialect: 'org.hibernate.dialect.Oracle10gDialect'
+    dbCreate: none
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
 environments:
