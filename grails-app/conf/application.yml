@@ -88,6 +88,10 @@ hibernate:
         queries: false
         use_second_level_cache: false
         use_query_cache: false
+        region.factory_class: false
+    jdbc:
+        use_get_generated_keys: true
+
 
 # dataSource:
 #     pooled: true
@@ -97,48 +101,68 @@ hibernate:
 #     password: ''
 
 #-# conexión a BBDD Oracle #-#
+    
+
 dataSource:
     pooled: true
     jmxExport: true
     driverClassName: 'oracle.jdbc.OracleDriver'
-    dialect: 'org.hibernate.dialect.Oracle10gDialect'
-    dbCreate: none
+    username: 'ruben'
+    password: 'kbxcanf2lvobfx'
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-environments:
+#environments:
 #NOTA: SIEMPRE establecer dbCreate: none, en caso de no querer actualizar el modelo
 #de lo contrario es posible que un plugin o alguna configuracion establezca un "create" o "create-drop"
 #y elimine filas de las tablas de la base de datos.
    
+    # development:
+    #     dataSource:
+    #         dbCreate: create
+    #         url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
+    #         username: 'ruben'
+    #         password: 'kbxcanf2lvobfx'
+    #         logSql: true
+    #         formatSql: true
+    #         properties:
+    #         jmxEnabled : true
+    #         initialSize : 5
+    #         maxActive : 50
+    #         minIdle : 5
+    #         maxIdle : 25
+    #         maxWait : 10000
+    #         maxAge : 600000
+    #         timeBetweenEvictionRunsMillis : 5000
+    #         minEvictableIdleTimeMillis : 60000
+    #         validationQuery : "SELECT 1 from dual"
+    #         validationQueryTimeout : 3
+    #         validationInterval : 15000
+    #         testOnBorrow : true
+    #         testWhileIdle : true
+    #         testOnReturn : false
+    #         test:
+    #     dataSource:
+    #         dbCreate: none       
+    #         url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
+    # production:
+    #     dataSource:
+    #         dbCreate: none       
+    #         url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
+
+# Environment specific settings
+environments:
     development:
         dataSource:
-            dbCreate: create
+            dbCreate: 'create'
+            dialect : 'org.hibernate.dialect.Oracle12cDialect'
             url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
-            username: 'ruben'
-            password: 'kbxcanf2lvobfx'
-            logSql: true
-            formatSql: true
-            properties:
-            jmxEnabled : true
-            initialSize : 5
-            maxActive : 50
-            minIdle : 5
-            maxIdle : 25
-            maxWait : 10000
-            maxAge : 600000
-            timeBetweenEvictionRunsMillis : 5000
-            minEvictableIdleTimeMillis : 60000
-            validationQuery : "SELECT 1 from dual"
-            validationQueryTimeout : 3
-            validationInterval : 15000
-            testOnBorrow : true
-            testWhileIdle : true
-            testOnReturn : false
-        test:
-            dataSource:
-                dbCreate: none       
-                url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
-        production:
-            dataSource:
-                dbCreate: none       
-                url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
+    test:
+        dataSource:
+            dbCreate: 'update'
+            dialect : 'org.hibernate.dialect.Oracle12cDialect'
+            url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
+    production:
+        dataSource:
+            dbCreate: 'update'
+            dialect : 'org.hibernate.dialect.Oracle12cDialect'
+            url: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PROTOCOL=tcp)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))'
